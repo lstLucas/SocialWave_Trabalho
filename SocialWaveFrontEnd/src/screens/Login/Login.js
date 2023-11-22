@@ -41,9 +41,9 @@ const Login = () => {
         navigate(url);
     };
 
-    const alterarCampo = (nome, valor) => {
+    const alterarCampo = (name, value) => {
         let obj = {...object};
-        obj[nome] = valor;
+        obj[name] = value;
         setObject(obj);
     };
 
@@ -57,11 +57,11 @@ const Login = () => {
         <form>
             <div className="form-group">
                 <label htmlFor="email">E-mail</label>
-                <input type="email" className="form-control" value={object.nome} onChange={(e) => alterarCampo(e.target.name, e.target.value)} id="email" name="email" aria-describedby="emailHelp" placeholder="Entre com o e-mail" />
+                <input type="email" className="form-control" value={object.name} onChange={(e) => alterarCampo(e.target.name, e.target.value)} id="email" name="email" aria-describedby="emailHelp" placeholder="Entre com o e-mail" />
             </div>
             <div className="form-group">
-                <label htmlFor="senha">Senha</label>
-                <input type="password" className="form-control" value={object.senha} onChange={(e) => alterarCampo(e.target.name, e.target.value)} id="senha" name="senha" placeholder="Digite a sua senha" />
+                <label htmlFor="password">Senha</label>
+                <input type="password" className="form-control" value={object.password} onChange={(e) => alterarCampo(e.target.name, e.target.value)} id="password" name="password" placeholder="Digite a sua senha" />
             </div>
             <button type="submit" className="btn btn-primary mt-2" onClick={logar}>Entrar</button>
             <span> </span>
