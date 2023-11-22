@@ -6,9 +6,9 @@ namespace SocialWaveBackEnd.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class UsuarioController : ControllerBase
+public class UserController : ControllerBase
 {
-    public UsuarioController(UserManager<IdentityUser> userManager,
+    public UserController(UserManager<IdentityUser> userManager,
         SignInManager<IdentityUser> signInManager,
         RoleManager<IdentityRole> roleManager, IAuthService authService)
     {
