@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
-import {useQuery} from '../useQuery';
+import {useQuery} from '../../useQuery';
 import { useNavigate, Link } from 'react-router-dom';
-import { login } from '../auth';
+import { login } from '../../auth';
+import './style.css';
+import SWLogo from '../../Images/SWLogo.jpeg';
 
 const Login = () => {
     const query = useQuery();
@@ -46,8 +48,11 @@ const Login = () => {
     };
 
     return (
-    <div className="mx-5">
-        <h1>Login</h1>
+    <div className="login-container">
+        <div className='header'>
+            <img id='logo' src={SWLogo}></img>
+            <h1>Login</h1>
+        </div>
         {/* <button onClick={navegar}>Navegar</button> */}
         <form>
             <div className="form-group">
@@ -62,7 +67,8 @@ const Login = () => {
             <span> </span>
             <Link className="btn btn-secondary mt-2" to={'/registrar?redirect=' + redirecionarPara}>Criar Novo Usuário</Link>
         </form>
-    </div>);
+    </div>
+    );
 };
 
 export default Login;
