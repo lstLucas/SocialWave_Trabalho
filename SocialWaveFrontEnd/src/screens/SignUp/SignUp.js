@@ -41,9 +41,9 @@ const Login = () => {
         navigate(url);
     };
 
-    const alterarCampo = (nome, valor) => {
+    const alterarCampo = (name, value) => {
         let obj = {...object};
-        obj[nome] = valor;
+        obj[name] = value;
         setObject(obj);
     };
 
@@ -51,19 +51,22 @@ const Login = () => {
     <div className="login-container">
         <div className='header'>
             <img id='logo' src={SWLogo}></img>
-            <h1>Login</h1>
+            <h1>Create Your Account</h1>
         </div>
-        {/* <button onClick={navegar}>Navegar</button> */}
         <form>
+        <div className="form-group">
+                <label htmlFor="username">Username</label>
+                <input type="text" className="form-control" value={object.username} onChange={(e) => alterarCampo(e.target.name, e.target.value)} id="username" name="username" placeholder="e.g, Lsteixeira" />
+            </div>
             <div className="form-group">
                 <label htmlFor="email">E-mail</label>
-                <input type="email" className="form-control" value={object.nome} onChange={(e) => alterarCampo(e.target.name, e.target.value)} id="email" name="email" aria-describedby="emailHelp" placeholder="Entre com o e-mail" />
+                <input type="email" className="form-control" value={object.name} onChange={(e) => alterarCampo(e.target.name, e.target.value)} id="email" name="email" aria-describedby="emailHelp" placeholder="e.g, lst@email.com" />
             </div>
             <div className="form-group">
-                <label htmlFor="senha">Senha</label>
-                <input type="password" className="form-control" value={object.senha} onChange={(e) => alterarCampo(e.target.name, e.target.value)} id="senha" name="senha" placeholder="Digite a sua senha" />
+                <label htmlFor="senha">Password</label>
+                <input type="password" className="form-control" value={object.password} onChange={(e) => alterarCampo(e.target.name, e.target.value)} id="senha" name="senha" placeholder="e.g, ******" />
             </div>
-            <button type="submit" className="btn btn-primary mt-2" onClick={logar}>Entrar</button>
+            <button type="submit" className="btn btn-primary mt-2" onClick={logar}>Sign Up</button>
             <span> </span>
             <Link className="btn btn-secondary mt-2" to={'/signup?redirect=' + redirectTo}>Sign up for free</Link>
         </form>
