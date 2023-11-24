@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
-import {useQuery} from '../../useQuery';
+import {useQuery} from '../useQuery';
 import { useNavigate, Link } from 'react-router-dom';
-import { login } from '../../auth';
-import './style.css';
-import SWLogo from '../../Images/SWLogo.jpeg';
+import { login } from '../auth';
+import SWLogo from '../images/SWLogo.jpeg';
 
 const Login = () => {
     const query = useQuery();

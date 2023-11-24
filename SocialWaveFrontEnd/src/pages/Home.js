@@ -1,5 +1,6 @@
 import Sidebar from '../components/Sidebar'
 import { Flex, Text, IconButton } from '@chakra-ui/react'
+import { Outlet } from 'react-router-dom'
 import { FiMenu } from 'react-icons/fi'
 
 export default function Home() {
@@ -12,13 +13,7 @@ export default function Home() {
         left="50%"
         transform="translate(-50%, -50%)"
       >
-        <Text>Click the
-          <IconButton
-            background="none"
-            _hover={{ background: 'none' }}
-            icon={<FiMenu />}
-          />
-        to resize the vertical navigation bar.</Text>
+        <Outlet />
       </Flex>
     </Flex>
   )

@@ -13,7 +13,6 @@ const root = ReactDOM.createRoot(container);
 root.render(
   <React.StrictMode>
     <ColorModeScript />
-    <Routes />
     <App />
   </React.StrictMode>
 );

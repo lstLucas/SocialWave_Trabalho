@@ -22,7 +22,6 @@ import NavItem from '../components/NavItem'
 export default function Sidebar() {
 
     const [navSize, changeNavSize] = useState("large");
-    const navigate = useNavigate();
 
     return (
         <React.Fragment>        
@@ -50,7 +49,7 @@ export default function Sidebar() {
                         _hover={{ background: 'none' }}
                         icon={<FiMenu />}
                         onClick={(title) => {
-                            navigate(`/${title}`);
+                           
                         }}
                     />
                     <NavItem navSize={navSize} icon={FiHome} title="Dashboard" description="This is the description for the dashboard." />
