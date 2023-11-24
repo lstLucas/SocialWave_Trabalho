@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "WvcVPj9nhARq0Ok0cjQSDbK7Yv/7k+iItp2kMFL67QQbHHkjfcktleW0k8ManaVRHerRtz3A8rmMMQIGRocs9A==",
+  "dgSpecHash": "cyw2Fd25wkFJ8V1tCJTL0BX4IF2cOgv/0z/tkDTl7m2bSmiLUEqVpU57kIMP/smyARyxzZ/N3Sp4adyFecMZNg==",
   "success": true,
-  "projectFilePath": "/home/lucas-teixeira/Documents/PFS/Rede_Social/SocialWaveBackEnd/SocialWaveBackEnd.csproj",
+  "projectFilePath": "/home/lucas-teixeira/Documents/PFS/Rede_Social/SocialWave_Trabalho/SocialWaveBackEnd/SocialWaveBackEnd.csproj",
   "expectedPackageFiles": [
     "/home/lucas-teixeira/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/home/lucas-teixeira/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/7.0.13/microsoft.aspnetcore.authentication.jwtbearer.7.0.13.nupkg.sha512",

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/lucas-teixeira/Documents/PFS/Rede_Social/SocialWaveBackEnd/SocialWaveBackEnd.csproj": {}
+    "/home/lucas-teixeira/Documents/PFS/Rede_Social/SocialWave_Trabalho/SocialWaveBackEnd/SocialWaveBackEnd.csproj": {}
   },
   "projects": {
-    "/home/lucas-teixeira/Documents/PFS/Rede_Social/SocialWaveBackEnd/SocialWaveBackEnd.csproj": {
+    "/home/lucas-teixeira/Documents/PFS/Rede_Social/SocialWave_Trabalho/SocialWaveBackEnd/SocialWaveBackEnd.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/lucas-teixeira/Documents/PFS/Rede_Social/SocialWaveBackEnd/SocialWaveBackEnd.csproj",
+        "projectUniqueName": "/home/lucas-teixeira/Documents/PFS/Rede_Social/SocialWave_Trabalho/SocialWaveBackEnd/SocialWaveBackEnd.csproj",
         "projectName": "SocialWaveBackEnd",
-        "projectPath": "/home/lucas-teixeira/Documents/PFS/Rede_Social/SocialWaveBackEnd/SocialWaveBackEnd.csproj",
+        "projectPath": "/home/lucas-teixeira/Documents/PFS/Rede_Social/SocialWave_Trabalho/SocialWaveBackEnd/SocialWaveBackEnd.csproj",
         "packagesPath": "/home/lucas-teixeira/.nuget/packages/",
-        "outputPath": "/home/lucas-teixeira/Documents/PFS/Rede_Social/SocialWaveBackEnd/obj/",
+        "outputPath": "/home/lucas-teixeira/Documents/PFS/Rede_Social/SocialWave_Trabalho/SocialWaveBackEnd/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/lucas-teixeira/.nuget/NuGet/NuGet.Config"
