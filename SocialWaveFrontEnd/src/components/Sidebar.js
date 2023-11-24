@@ -1,9 +1,11 @@
+import React, { useState, useEffect } from 'react';
 import { Sidebar } from 'flowbite-react';
 import { useNavigate } from 'react-router-dom';
 import { HiArrowSmRight, HiChartPie, HiInbox, HiShoppingBag, HiTable, HiUser, HiViewBoards, HiLogout } from 'react-icons/hi';
 import { isAuth, logout, nameLoggedUser } from '../auth';
 
 export function CustomSideBar({ children }) {
+  const [username, setUsername] = useState('');
   const navigate = useNavigate();
 
   let logoff = () => {
@@ -12,10 +14,23 @@ export function CustomSideBar({ children }) {
     navigate('/login');
   }
 
+  useEffect(() => {
+      async function fetchUsername() {
+        try {
+          const result = await nameLoggedUser();
+          setUsername(result);
+        } catch (error) {
+          console.error('Erro ao obter o nome de usuário:', error);
+        }
+      }
+  
+      fetchUsername();
+  }, []);
+
   let sideBarAuthItens = isAuth() ? (
       <>
         <Sidebar.Item href="#" icon={HiUser}>
-            {nameLoggedUser()}
+            {typeof username === 'object' ? 'Carregando...' : username}
         </Sidebar.Item>
         <Sidebar.Item href="/login" icon={HiLogout} onClick={logoff}>
             Logout

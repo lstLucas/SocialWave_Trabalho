@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace SocialWaveBackEnd.Controllers;
 
@@ -59,6 +60,27 @@ public class UserController : ControllerBase
         else
             return BadRequest(retToken.Result);
     }
+
+    [HttpGet("GetUsername")]
+    [Authorize] // Se deseja que apenas usuários autenticados possam acessar este endpoint
+    public async Task<ActionResult<string>> GetUsername()
+    {
+        // Obtém o ID do usuário autenticado
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (userId != null)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+
+            if (user != null)
+            {
+                return Ok(user.UserName);
+            }
+        }
+
+    return NotFound();
+}
+
     
     private readonly UserManager<IdentityUser> userManager;
     private readonly RoleManager<IdentityRole> roleManager;
