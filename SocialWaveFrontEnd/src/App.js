@@ -1,12 +1,11 @@
-import Home from './pages/Home';
-import './styles/globals.css'
-import { ChakraProvider } from "@chakra-ui/react"
+import logo from './logo.svg';
+import './App.css';
+import Router from './Routes';
+import { CustomSideBar } from './components/Sidebar';
 
 function App() {
   return (
-    <ChakraProvider>
-      <Home />
-    </ChakraProvider>
+      <Router />
   );
 }
 

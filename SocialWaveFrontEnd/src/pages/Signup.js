@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { login } from '../auth';
 import SWLogo from '../images/SWLogo.jpeg';
 
-const Login = () => {
+const SignUp = () => {
     const query = useQuery();
     const navigate = useNavigate();
     const [object, setObject] = useState({email: '', password: ''});
@@ -51,24 +51,36 @@ const Login = () => {
         <div className="bg-white p-8 rounded shadow-md w-full max-w-sm">
           <div className='text-center mb-4'>
             <img className='mx-auto w-16 h-16' src={SWLogo} alt="Logo"></img>
-            <h1 className='text-xl font-semibold'>Login</h1>
+            <h1 className='text-xl font-semibold'>Create Your Account</h1>
           </div>
           <form>
+            <div className="mb-4">
+              <label htmlFor="username" className="block text-gray-700">Username</label>
+              <input
+                type="text"
+                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+                value={object.username}
+                onChange={(e) => alterarCampo(e.target.name, e.target.value)}
+                id="username"
+                name="username"
+                placeholder="e.g, Lsteixeira"
+              />
+            </div>
             <div className="mb-4">
               <label htmlFor="email" className="block text-gray-700">E-mail</label>
               <input
                 type="email"
                 className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
-                value={object.name}
+                value={object.email}
                 onChange={(e) => alterarCampo(e.target.name, e.target.value)}
                 id="email"
                 name="email"
                 aria-describedby="emailHelp"
-                placeholder="Entre com o e-mail"
+                placeholder="e.g, lst@email.com"
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="password" className="block text-gray-700">Senha</label>
+              <label htmlFor="password" className="block text-gray-700">Password</label>
               <input
                 type="password"
                 className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
@@ -76,7 +88,7 @@ const Login = () => {
                 onChange={(e) => alterarCampo(e.target.name, e.target.value)}
                 id="password"
                 name="password"
-                placeholder="Digite a sua senha"
+                placeholder="e.g, ******"
               />
             </div>
             <button
@@ -84,14 +96,14 @@ const Login = () => {
               className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition duration-300"
               onClick={logar}
             >
-              Entrar
+              Sign Up
             </button>
             <p className="text-center mt-4">
               <Link
                 to={'/signup?redirect=' + redirectTo}
                 className="text-blue-500 hover:underline"
               >
-                Sign up for free
+                Already have an account? Sign in
               </Link>
             </p>
           </form>
@@ -101,4 +113,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default SignUp;

@@ -5,7 +5,7 @@ import {isAuth, getToken} from '../auth';
 const baseURL = 'http://localhost:5286/api'
 const cookies = new Cookies();
 
-const checkAuth = (navigate, locationUrl) => {
+export const checkAuth = (navigate, locationUrl) => {
     if(!isAuth()) {
         navigate('/login?redirect=' + locationUrl);
     }
