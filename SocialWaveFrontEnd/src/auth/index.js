@@ -37,9 +37,9 @@ export const userHasPerm = (perm) => {
     return permissoes.includes(';' + perm + ';');
 }
 
-export const registerUser = (user, password, admin, success, erro) => {
+export const registerUser = (user, password, username, admin, success, erro) => {
     
-    apiPost('user/create' + (admin ? 'admin' : ''), {Email: user, Password: password}, (result) => {
+    apiPost('user/create' + (admin ? 'admin' : ''), {Email: user, Password: password, Username: username}, (result) => {
         const token = result;
         const decoded = jwtDecode(token);
 
@@ -50,6 +50,7 @@ export const registerUser = (user, password, admin, success, erro) => {
         
         cookies.set('jwt_auth', token, {
             expires: new Date(decoded.exp * 1000), 
+            sameSite: 'strict'
         });
 
         success(unique_name, roles);

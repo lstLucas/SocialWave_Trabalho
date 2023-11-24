@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
 import {useQuery} from '../useQuery';
-import { useNavigate, Link } from 'react-router-dom';
-import { login } from '../auth';
+import { useNavigate, Link, useParams } from 'react-router-dom';
+import { registerUser } from '../auth';
 import SWLogo from '../images/SWLogo.jpeg';
 
 const SignUp = () => {
+    const { action } = useParams();
     const query = useQuery();
     const navigate = useNavigate();
-    const [object, setObject] = useState({email: '', password: ''});
+    const [object, setObject] = useState({email: '', password: '', username: ''});
 
     let redirectTo = query.get('redirect');
 
@@ -23,9 +24,14 @@ const SignUp = () => {
         console.log(e);
     }
 
-    const logar = (e) => {
+    const signup = (e) => {
         e.preventDefault();
-        login(object.email, object.password, sucesso, erro)
+
+        if(action === 'admin')
+          registerUser(object.email, object.password, object.username, true, sucesso, erro)
+        else
+        registerUser(object.email, object.password, object.username, false, sucesso, erro)
+          
     };
 
     const navegar = () => {
@@ -94,13 +100,13 @@ const SignUp = () => {
             <button
               type="submit"
               className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition duration-300"
-              onClick={logar}
+              onClick={signup}
             >
               Sign Up
             </button>
             <p className="text-center mt-4">
               <Link
-                to={'/signup?redirect=' + redirectTo}
+                to={'/login' + redirectTo}
                 className="text-blue-500 hover:underline"
               >
                 Already have an account? Sign in
