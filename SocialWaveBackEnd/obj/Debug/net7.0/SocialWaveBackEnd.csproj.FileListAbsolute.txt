@@ -245,3 +245,4 @@
 /home/lucas/Documents/Faculdade/Programacao FullStack/SocialWave_Trabalho/SocialWaveBackEnd/obj/Debug/net7.0/SocialWaveBackEnd.pdb
 /home/lucas/Documents/Faculdade/Programacao FullStack/SocialWave_Trabalho/SocialWaveBackEnd/obj/Debug/net7.0/SocialWaveBackEnd.genruntimeconfig.cache
 /home/lucas/Documents/Faculdade/Programacao FullStack/SocialWave_Trabalho/SocialWaveBackEnd/obj/Debug/net7.0/ref/SocialWaveBackEnd.dll
+/home/lucas-teixeira/Documents/PFS/Rede_Social/SocialWave_Trabalho/SocialWaveBackEnd/bin/Debug/net7.0/package-lock.json
