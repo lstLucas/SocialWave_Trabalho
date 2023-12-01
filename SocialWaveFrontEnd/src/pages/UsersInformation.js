@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from '../useQuery';
 import { useNavigate, Link } from 'react-router-dom';
-import { login } from '../auth';
+import { login, userHasPerm } from '../auth';
 import SWLogo from '../images/SWLogo.jpeg';
+import { isAuth, logout, nameLoggedEmail, nameLoggedUser } from '../auth';
 import {
     List,
     ListItem,
@@ -28,11 +29,25 @@ import {
     );
   }
 const UsersInformation = () => {
+    const [email, setEmail] = useState('');
+    useEffect(() => {
+        async function fetchUsersEmails() {
+          try {
+            const resultEmail = await nameLoggedEmail();
+            setEmail(resultEmail);
+          } catch (error) {
+            console.error('Erro ao obter o email:', error);
+          }
+        }
+    
+        fetchUsersEmails();
+    }, []);
   return (
-    <Card className="w-96">
+    <Card className="w-96" style={{ margin: '0 auto' }}>
+        <h1 className="text-2xl font-bold mb-4" style={{ margin: '0 auto' }}>Users Informations</h1>
       <List>
         <ListItem ripple={false} className="py-1 pr-1 pl-4">
-          Item One
+          {email}
           <ListItemSuffix>
             <IconButton variant="text" color="blue-gray">
               <TrashIcon />
