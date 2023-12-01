@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import { useQuery } from '../useQuery';
-import { useNavigate, Link } from 'react-router-dom';
-import { login } from '../auth';
 import SWLogo from '../images/SWLogo.jpeg';
 
 const Profile = () => {
