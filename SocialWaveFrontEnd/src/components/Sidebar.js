@@ -25,7 +25,7 @@ export function CustomSideBar({ children }) {
       }
   
       fetchUsername();
-  }, []);
+  }, );
 
   let sideBarAuthItens = isAuth() ? (
       <>
