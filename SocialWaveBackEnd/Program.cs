@@ -49,6 +49,14 @@ builder.Services
         };
     });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Admin",
+         policy => policy.RequireRole("Admin"));
+    options.AddPolicy("Member",
+         policy => policy.RequireRole("Member"));
+});
+
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddCors(options =>

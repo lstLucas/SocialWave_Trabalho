@@ -1,6 +1,6 @@
 import Cookies from 'universal-cookie';
 import {jwtDecode} from 'jwt-decode';
-import { apiPost } from '../apis';
+import { apiAuthGet, apiPost } from '../apis';
 
 const cookies = new Cookies();
 
@@ -45,6 +45,10 @@ export const userHasPerm = (perm) => {
     return permissoes.includes(';' + perm + ';');
 }
 
+export const getAllPosts = (success, error, navigate, locationUrl) => {
+    apiAuthGet('post', success, error, navigate, locationUrl);
+};
+
 export const registerUser = (user, password, username, admin, success, erro) => {
     
     apiPost('user/create' + (admin ? 'admin' : ''), {Email: user, Password: password, Username: username}, (result) => {
@@ -84,7 +88,6 @@ export const login = (user, password, success, erro) => {
         success(unique_name, roles);
     }, erro);    
 };
-
 
 export const logout = () => {
     cookies.remove('jwt_auth');
