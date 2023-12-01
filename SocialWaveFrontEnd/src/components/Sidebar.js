@@ -29,8 +29,8 @@ export function CustomSideBar({ children }) {
 
   let sideBarAuthItens = isAuth() ? (
       <>
-        <Sidebar.Item href="#" icon={HiUser}>
-            {typeof username === 'object' ? 'Carregando...' : username}
+        <Sidebar.Item href="/profile" icon={HiUser}>
+            {typeof username === 'object' ? 'Profile' : username}
         </Sidebar.Item>
         <Sidebar.Item href="/login" icon={HiLogout} onClick={logoff}>
             Logout
