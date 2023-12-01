@@ -58,9 +58,6 @@ export function CustomSideBar({ children }) {
           <Sidebar.Item href="/feed" icon={HiViewBoards} label="" labelColor="dark">
             Feed
           </Sidebar.Item>
-          <Sidebar.Item href="#" icon={HiInbox} label="3">
-            Inbox
-          </Sidebar.Item>
           { sideBarAuthItens }
           {/* <Sidebar.Item href="#" icon={HiShoppingBag}>
             Products

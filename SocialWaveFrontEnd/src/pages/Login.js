@@ -23,9 +23,9 @@ const Login = () => {
         console.log(e);
     }
 
-    const signin = (e) => {
+    const signIn = (e) => {
         e.preventDefault();
-        login(object.email, object.password, sucesso, erro)
+        login(object.email, object.password, sucesso, erro);
     };
 
     const navegar = () => {
@@ -82,7 +82,7 @@ const Login = () => {
             <button
               type="submit"
               className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition duration-300"
-              onClick={signin}
+              onClick={signIn}
             >
               Entrar
             </button>
