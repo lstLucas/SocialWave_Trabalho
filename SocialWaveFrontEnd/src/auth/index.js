@@ -23,6 +23,14 @@ export const nameLoggedUser = () => {
     }
 };
 
+export const nameLoggedEmail = () => {
+    if (isAuth()) {
+        return localStorage.getItem('user_name');
+    } else {
+        return '';
+    }
+};
+
 export const permsLoggedUser = () => {
     if (isAuth()) {
         return localStorage.getItem('user_perm');
