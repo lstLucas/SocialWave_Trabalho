@@ -62,10 +62,9 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("GetUsername")]
-    [Authorize] // Se deseja que apenas usuários autenticados possam acessar este endpoint
+    [Authorize] 
     public async Task<ActionResult<string>> GetUsername()
     {
-        // Obtém o ID do usuário autenticado
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         if (userId != null)
