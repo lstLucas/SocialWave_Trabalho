@@ -17,7 +17,7 @@ export const getToken = () => {
 
 export const nameLoggedUser = () => {
     if (isAuth()) {
-        return localStorage.getItem('user_name');
+        return localStorage.getItem('user_username');
     } else {
         return '';
     }
@@ -47,6 +47,7 @@ export const registerUser = (user, password, username, admin, success, erro) => 
 
         localStorage.setItem('user_name', unique_name);
         localStorage.setItem('user_perm', roles);
+        localStorage.setItem('user_username', username);
         
         cookies.set('jwt_auth', token, {
             expires: new Date(decoded.exp * 1000), 
