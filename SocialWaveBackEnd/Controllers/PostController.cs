@@ -46,12 +46,12 @@ public class PostController : ControllerBase
 
         var authorId = post.AuthorId;
 
-        var author = db.UserInfo.Find(authorId);
-        System.Console.WriteLine(author);
+        var author = db.Users.FirstOrDefault(u => u.Id == authorId);
 
         if (author != null)
         {
             post.AuthorId = authorId;
+            post.AuthorName = author.UserName;
         }
         else
         {

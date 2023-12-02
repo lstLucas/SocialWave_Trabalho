@@ -104,7 +104,8 @@ const Feed = () => {
         title: newPostData.title,
         body: newPostData.body,
         likes: 0,
-        authorId: userDetails.id
+        authorId: userDetails.id,
+        authorName: userDetails.userName,
       };
 
       apiAuthPost('post', newPost,

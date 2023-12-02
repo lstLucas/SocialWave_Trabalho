@@ -21,7 +21,7 @@ public class AuthService : IAuthService
 
         IdentityUser user = new()
         {
-            UserName = model.Email,
+            UserName = model.Username,
             Email = model.Email,
             SecurityStamp = Guid.NewGuid().ToString()
         };

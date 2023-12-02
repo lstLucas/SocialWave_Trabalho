@@ -57,9 +57,9 @@ export const registerUser = (user, password, username, admin, success, erro) => 
 
         const {unique_name, roles} = decoded;
 
-        localStorage.setItem('user_name', unique_name);
+        localStorage.setItem('user_name', user);
         localStorage.setItem('user_perm', roles);
-        localStorage.setItem('user_username', username);
+        localStorage.setItem('user_username', unique_name);
         
         cookies.set('jwt_auth', token, {
             expires: new Date(decoded.exp * 1000), 
