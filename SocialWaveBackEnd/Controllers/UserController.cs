@@ -25,7 +25,6 @@ public class UserController : ControllerBase
         return await CreateUserExecute(model);
     }
 
-    [Authorize(Policy = "Admin")]
     [HttpPost("CreateAdmin")]
     public async Task<ActionResult<string>> CreateAdminUser([FromBody] UserInfo model)
     {
