@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Sidebar } from 'flowbite-react';
 import { useNavigate } from 'react-router-dom';
 import { HiArrowSmRight, HiChartPie, HiInbox, HiShoppingBag, HiTable, HiUser, HiViewBoards, HiLogout, HiUserGroup } from 'react-icons/hi';
-import { isAuth, logout, nameLoggedUserCookies, userHasPerm } from '../auth';
+import { getToken, isAuth, logout, nameLoggedEmail, nameLoggedUserCookies, userHasPerm } from '../auth';
 
 export function CustomSideBar({ children }) {
   const [username, setUsername] = useState('');
@@ -22,7 +22,7 @@ export function CustomSideBar({ children }) {
           if(result)
             setUsername(result);
           else{
-            if(isAuth()){
+            if(isAuth() && localStorage.getItem('user_name') != null){
               setUsername("Admin");
               localStorage.setItem('user_name', "admin@email.com");
               localStorage.setItem('user_perm', "Admin");
