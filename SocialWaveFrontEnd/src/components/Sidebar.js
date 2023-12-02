@@ -22,9 +22,8 @@ export function CustomSideBar({ children }) {
           if(result)
             setUsername(result);
           else{
-            if(isAuth() && localStorage.getItem('user_name') != null){
+            if(isAuth() && localStorage.getItem('user_name') === 'admin@email.com'){
               setUsername("Admin");
-              localStorage.setItem('user_name', "admin@email.com");
               localStorage.setItem('user_perm', "Admin");
             }
           }
