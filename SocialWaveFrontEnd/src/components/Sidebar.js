@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Sidebar } from 'flowbite-react';
 import { useNavigate } from 'react-router-dom';
-import { HiArrowSmRight, HiChartPie, HiInbox, HiShoppingBag, HiTable, HiUser, HiViewBoards, HiLogout } from 'react-icons/hi';
+import { HiArrowSmRight, HiChartPie, HiInbox, HiShoppingBag, HiTable, HiUser, HiViewBoards, HiLogout, HiUserGroup } from 'react-icons/hi';
 import { isAuth, logout, nameLoggedUser, userHasPerm } from '../auth';
 
 export function CustomSideBar({ children }) {
@@ -48,8 +48,11 @@ export function CustomSideBar({ children }) {
   );
   let sideBarAdminItens = userHasPerm('Admin') ? (
     <>
+          <Sidebar.Item href="/Users" icon={HiUserGroup}>
+        Users
+      </Sidebar.Item>
       <Sidebar.Item href="/signup" icon={HiTable}>
-        Sign Up
+        Create new Admin
       </Sidebar.Item>
     </>
   ) : null;
