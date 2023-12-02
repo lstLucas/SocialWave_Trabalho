@@ -237,6 +237,7 @@ const Feed = () => {
                 className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
                 id="titulo"
                 name="title"
+                required
                 placeholder="Your post Title"
                 value={newPostData.title}
                 onChange={handleInputChange}
@@ -250,6 +251,7 @@ const Feed = () => {
                 className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 h-32 resize-none"
                 id="conteudo"
                 name="body"
+                required
                 placeholder="Digite o conteúdo da postagem"
                 value={newPostData.body}
                 onChange={handleInputChange}
