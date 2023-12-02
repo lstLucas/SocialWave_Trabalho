@@ -84,6 +84,7 @@ public class PostController : ControllerBase
 
         return NoContent();
     }
+
     // PUT: api/Feed/like/5/2
     [HttpPut("like/{id}/{userId}")]
     public async Task<IActionResult> ToggleLike(string id, string userId)
@@ -116,7 +117,28 @@ public class PostController : ControllerBase
         }
 
     }
-    
+
+    // GET: api/Feed/like/2
+    [HttpGet("like/{userId}")]
+    public IActionResult GetLikedPosts(string userId)
+    {
+        var likedPostIds = db.UserLikedPosts
+                            .Where(ul => ul.UserId == userId)
+                            .Select(ul => ul.PostId)
+                            .ToList();
+
+        var likedPosts = db.Feed
+                            .Where(p => likedPostIds.Contains(p.Id))
+                            .ToList();
+
+        if (likedPosts == null || likedPosts.Count == 0)
+        {
+            return NotFound("No liked posts found for the user");
+        }
+
+        return Ok(likedPosts);
+    }
+
 
     // DELETE: api/Feed/5
     [HttpDelete("{id}")]
