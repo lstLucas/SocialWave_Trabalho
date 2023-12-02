@@ -89,9 +89,8 @@ export const login = (user, password, success, erro) => {
     }, erro);    
 };
 
-export const updateLike = (post, like, success, error) => {
-    post.likes += like;
-    apiAuthPut('post', post.id, post, success, error );
+export const updateLike = (post, userId, success, error) => {
+    apiAuthPut(`post/like/${post.id}`, userId, post, success, error );
 }
 
 export const logout = () => {

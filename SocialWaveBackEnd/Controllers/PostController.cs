@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
+using SocialWaveApi.Services;
 
 namespace SocialWaveBackEnd.Controllers;
 
@@ -12,8 +13,11 @@ namespace SocialWaveBackEnd.Controllers;
 [Route("api/[controller]")]
 public class PostController : ControllerBase
 {
-    public PostController(ApplicationDbContext db) =>
+    public PostController(ApplicationDbContext db, UserLikedPostService userLikedPostService)
+    {
         this.db = db;
+        this.userLikedPostService = userLikedPostService;
+    }
 
     // GET: api/Feed
     [HttpGet]
@@ -80,6 +84,39 @@ public class PostController : ControllerBase
 
         return NoContent();
     }
+    // PUT: api/Feed/like/5/2
+    [HttpPut("like/{id}/{userId}")]
+    public async Task<IActionResult> ToggleLike(string id, string userId)
+    {
+        var post = await db.Feed.FirstOrDefaultAsync(p => p.Id == id);
+
+        if (post == null)
+        {
+            return NotFound("Post not found");
+        }
+
+        userLikedPostService.ToggleLike(userId, id);
+
+        try
+        {
+            db.Update(post);
+            await db.SaveChangesAsync();
+            return NoContent();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!PostExists(id))
+            {
+                return NotFound();
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+    }
+    
 
     // DELETE: api/Feed/5
     [HttpDelete("{id}")]
@@ -99,5 +136,11 @@ public class PostController : ControllerBase
         return NoContent();
     }
 
+    private bool PostExists(string id)
+    {
+        return db.Feed.Any(e => e.Id == id);
+    }
+
     private readonly ApplicationDbContext db;
+    private readonly UserLikedPostService userLikedPostService;
 }

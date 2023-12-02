@@ -21,9 +21,26 @@ const Feed = () => {
 
   useEffect(() => {
     if (isAuth()) {
-      getAllPosts((filteredPosts) => {
-        setPosts(filteredPosts);
-      });
+    async function fetchPosts() {
+      try {
+        const filteredPosts = await new Promise((resolve, reject) => {
+          getAllPosts(
+            (filteredPosts) => {
+              resolve(filteredPosts);
+            },
+            (error) => {
+              reject(error);
+            }
+          );
+        });
+  
+          setPosts(filteredPosts);
+        } catch (error) {
+          console.error('Erro ao obter posts:', error);
+        }
+      }
+  
+      fetchPosts();
 
       async function fetchUserInfo() {
         try {
@@ -101,7 +118,7 @@ const Feed = () => {
       try {
         await updateLike(
           post,
-          -1, 
+          userDetails.id, 
           () => {
             console.log('PUT realizado na API com sucesso');
             
@@ -119,7 +136,7 @@ const Feed = () => {
       try {
         await updateLike(
           post,
-          1, 
+          userDetails.id, 
           () => {
             console.log('Outro tipo de PUT realizado na API com sucesso');
             

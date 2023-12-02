@@ -7,6 +7,7 @@ namespace SocialWaveApi.Models
     public class ApplicationDbContext : IdentityDbContext
     {
         public DbSet<Post> Feed { get; set; } = null!;
+        public DbSet<UserLikedPost> UserLikedPosts { get; set; }
         
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
