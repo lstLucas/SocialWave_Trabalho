@@ -7,6 +7,7 @@ import { apiAuthGet, apiAuthGetById, apiAuthPost } from '../apis';
 
 const Feed = () => {
   const [posts, setPosts] = useState([]);
+  const [likedPosts, setLikedPosts] = useState(Array(posts.length).fill(false));
   const [userDetails, setUserDetails] = useState(null);
   const [newPostData, setNewPostData] = useState({ title: '', body: '' });
   const [email, setEmail] = useState('');
@@ -32,7 +33,7 @@ const Feed = () => {
           console.error('Erro ao obter o nome de usuário ou email:', error);
         }
       }
-      
+
 
       fetchUserInfo();
     }
@@ -41,7 +42,7 @@ const Feed = () => {
   useEffect(() => {
     if (isAuth() && email) {
       getUserDetails(email);
-      
+
     }
   }, [email]);
 
@@ -50,7 +51,7 @@ const Feed = () => {
       apiAuthGet('user/details/' + email,
         userDetails => {
           setUserDetails(userDetails);
-          
+
         },
         error => {
           console.error('Erro ao obter detalhes do usuário:', error);
@@ -60,7 +61,7 @@ const Feed = () => {
   }
 
   function updateAuthorName(username, index) {
-    if(isAuth){
+    if (isAuth) {
       const authorParagraphs = document.querySelectorAll('.author-paragraph');
       if (authorParagraphs.length > index) {
         authorParagraphs[index].textContent = `Author: ${username}`;
@@ -69,7 +70,7 @@ const Feed = () => {
   }
 
   async function getAuthorUsername(id, index) {
-    if(isAuth){
+    if (isAuth) {
       try {
         const userInfo = await new Promise((resolve, reject) => {
           apiAuthGetById('user', id,
@@ -88,6 +89,11 @@ const Feed = () => {
     }
   }
 
+  const handleLikeClick = (index) => {
+    const updatedLikedPosts = [...likedPosts];
+    updatedLikedPosts[index] = !updatedLikedPosts[index];
+    setLikedPosts(updatedLikedPosts);
+  };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -98,7 +104,6 @@ const Feed = () => {
     event.preventDefault();
 
     if (isAuth()) {
-      console.log(userDetails);
       const newPost = {
         id: Date.now().toString(),
         title: newPostData.title,
@@ -111,6 +116,7 @@ const Feed = () => {
       apiAuthPost('post', newPost,
         (result) => {
           console.log('Novo post criado:', result);
+          window.location.reload(false);
         },
         (error) => {
           console.error('Erro ao criar o post:', error);
@@ -180,18 +186,26 @@ const Feed = () => {
           <h1 className="text-3xl content-center">Lista de Posts</h1>
           <ul className="list-none p-0">
             {posts.map((post, index) => (
-              <li key={index} className="mb-8">
-                <div className="rounded-xl shadow-lg overflow-hidden bg-white">
-                  <div className="p-8">
-                    <h1 className="text-2xl font-bold mb-4">{post.title}</h1>
-                    <p className="text-gray-700 mb-6">{post.body}</p>
-                    <div className="flex justify-between items-center">
-                      <p className="text-gray-600">Likes: {post.likes}</p>
-                      <p className="text-gray-600 author-paragraph">Author: Loading...</p>
-                    </div>
-                  </div>
-                </div>
-              </li>
+               <li key={index} className="mb-8">
+               <div className="rounded-xl shadow-lg overflow-hidden bg-white">
+                 <div className="p-8">
+                   <h1 className="text-2xl font-bold mb-4">{post.title}</h1>
+                   <p className="text-gray-700 mb-6">{post.body}</p>
+                   <div className="flex justify-between items-center">
+                     <p className="text-gray-600">
+                       Likes: {post.likes}{' '}
+                       <span
+                         className={likedPosts[index] ? 'text-red-500' : ''}
+                         onClick={() => handleLikeClick(index)}
+                       >
+                         &hearts;
+                       </span>
+                     </p>
+                     <p className="text-gray-600 author-paragraph">Author: Loading...</p>
+                   </div>
+                 </div>
+               </div>
+             </li>
             ))}
           </ul>
         </div>
@@ -200,9 +214,9 @@ const Feed = () => {
         </div>
       </div>
     </div>
-    
+
   );
- 
+
 };
 
 export default Feed;
