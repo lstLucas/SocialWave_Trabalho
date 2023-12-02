@@ -15,7 +15,15 @@ export const getToken = () => {
     return token;
 }
 
-export const nameLoggedUser = () => {
+export const nameLoggedUser = (email, success, error, navigate, locationUrl) => {
+    if (isAuth()) {
+        apiAuthGet('user/details/'+email, success, error, navigate, locationUrl);
+    } else {
+        return '';
+    }
+};
+
+export const nameLoggedUserCookies = () => {
     if (isAuth()) {
         return localStorage.getItem('user_username');
     } else {
@@ -78,7 +86,7 @@ export const login = (user, password, success, erro) => {
 
         const {unique_name, roles} = decoded;
 
-        localStorage.setItem('user_name', unique_name);
+        localStorage.setItem('user_name', user);
         localStorage.setItem('user_perm', roles);
   
         cookies.set('jwt_auth', token, {

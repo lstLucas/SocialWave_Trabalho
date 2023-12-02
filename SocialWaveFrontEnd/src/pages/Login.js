@@ -31,8 +31,6 @@ const Login = () => {
     const navegar = () => {
         let url = query.get('redirect');
 
-        console.log("'"+url+"'");
-
         if (!url) {
             url = '/feed';
         }

@@ -29,6 +29,7 @@ public class UserController : ControllerBase
         return await CreateUserExecute(model);
     }
 
+    [Authorize(Policy = "Admin")]
     [HttpPost("CreateAdmin")]
     public async Task<ActionResult<string>> CreateAdminUser([FromBody] UserInfo model)
     {
@@ -53,6 +54,7 @@ public class UserController : ControllerBase
             return BadRequest(ret.Result);
     }
 
+    [Authorize(Policy = "Admin")]
     [HttpGet("All")]
     public ActionResult<IEnumerable<UserInfo>> GetAllUsers()
     {
@@ -97,7 +99,8 @@ public class UserController : ControllerBase
 
         return NotFound("User not found.");
     }
-
+    
+    [Authorize(Policy = "Admin")]
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteUserById(string id)
     {

@@ -12,12 +12,15 @@ const Profile = () => {
   useEffect(() => {
     async function fetchUserInfo() {
       try {
-        const result = await nameLoggedUser();
         const resultEmail = await nameLoggedEmail();
-        setUsername(result);
-        setEmail(resultEmail);
+        const result = await nameLoggedUser(resultEmail, 
+          (userData)=>{
+            setUsername(userData.userName);
+            setEmail(userData.email);
+          }, 
+          (error) => { console.error('Error obtaining user data:', error)}, ()=>{}, ()=>{});
       } catch (error) {
-        console.error('Erro ao obter o nome de usuário ou email:', error);
+        console.error('Error obtaining username or email:', error);
       }
     }
 

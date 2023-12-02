@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Sidebar } from 'flowbite-react';
 import { useNavigate } from 'react-router-dom';
 import { HiArrowSmRight, HiChartPie, HiInbox, HiShoppingBag, HiTable, HiUser, HiViewBoards, HiLogout, HiUserGroup } from 'react-icons/hi';
-import { isAuth, logout, nameLoggedUser, userHasPerm } from '../auth';
+import { isAuth, logout, nameLoggedUserCookies, userHasPerm } from '../auth';
 
 export function CustomSideBar({ children }) {
   const [username, setUsername] = useState('');
   const navigate = useNavigate();
 
   let logoff = () => {
+    localStorage.clear();
     logout();
 
     navigate('/login');
@@ -17,10 +18,15 @@ export function CustomSideBar({ children }) {
   useEffect(() => {
       async function fetchUsername() {
         try {
-          const result = await nameLoggedUser();
-          setUsername(result);
+          const result = await nameLoggedUserCookies();
+          if(result)
+            setUsername(result);
+          else{
+            setUsername("Admin");
+            localStorage.setItem('user_name', "admin@email.com");
+          }
         } catch (error) {
-          console.error('Erro ao obter o nome de usuário:', error);
+          console.error('Error obtaining username:', error);
         }
       }
   
