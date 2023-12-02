@@ -75,6 +75,30 @@ public class UserController : ControllerBase
         return NotFound("No user found.");
     }
 
+    [Authorize(Policy = "Admin")]
+    [HttpGet("AllMembers")]
+    public async Task<ActionResult<IEnumerable<UserInfo>>> GetAllMembers()
+    {
+        var adminUsers = await userManager.GetUsersInRoleAsync("Admin");
+        var allUsers = userManager.Users.ToList();
+
+        var nonAdminUsers = allUsers.Where(user => !adminUsers.Any(admin => admin.Id == user.Id));
+
+        if (nonAdminUsers.Any())
+        {
+            var userInfoList = nonAdminUsers.Select(user => new UserInfo
+            {
+                Id = Guid.Parse(user.Id),
+                Username = user.UserName,
+                Email = user.Email,
+            }).ToList();
+
+            return Ok(userInfoList);
+        }
+
+        return new List<UserInfo>();
+    }
+
     [HttpGet("{id}")]
     public async Task<ActionResult<UserInfo>> GetUserById(string id)
     {
@@ -99,7 +123,7 @@ public class UserController : ControllerBase
 
         return NotFound("User not found.");
     }
-    
+
     [Authorize(Policy = "Admin")]
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteUserById(string id)
@@ -115,8 +139,9 @@ public class UserController : ControllerBase
         {
             var posts = db.Feed.Where(p => p.AuthorId == id).ToList();
             Console.WriteLine(posts);
-            
-            if(posts != null) {
+
+            if (posts != null)
+            {
                 db.Feed.RemoveRange(posts);
                 db.SaveChanges();
             }

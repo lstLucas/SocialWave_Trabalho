@@ -74,6 +74,39 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+    var adminRoleExists = await roleManager.RoleExistsAsync("Admin");
+    if (!adminRoleExists)
+    {
+        await roleManager.CreateAsync(new IdentityRole("Admin"));
+    }
+
+    var adminUser = await userManager.FindByNameAsync("Admin01");
+    if (adminUser == null)
+    {
+        adminUser = new IdentityUser
+        {
+            UserName = "Admin01",
+            Email = "admin@email.com"
+        };
+
+        var result = await userManager.CreateAsync(adminUser, "admin");
+
+        if (result.Succeeded)
+        {
+            await userManager.AddToRoleAsync(adminUser, "Admin");
+        }
+        else
+        {
+            System.Console.WriteLine("Erro na criação do admin");
+        }
+    }
+}
+
 
 if (app.Environment.IsDevelopment())
 {

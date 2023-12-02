@@ -45,7 +45,7 @@ const UsersInformation = () => {
   async function fetchUsers() {
     try {
       await apiAuthGet(
-        'user/all',
+        'user/allmembers',
         (data) => {
           setUsers(data);
         },

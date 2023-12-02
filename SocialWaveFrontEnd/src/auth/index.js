@@ -1,6 +1,6 @@
 import Cookies from 'universal-cookie';
 import {jwtDecode} from 'jwt-decode';
-import { apiAuthGet, apiAuthPut, apiPost } from '../apis';
+import { apiAuthGet, apiAuthPost, apiAuthPut, apiPost } from '../apis';
 
 const cookies = new Cookies();
 
@@ -58,24 +58,46 @@ export const getAllPosts = (success, error, navigate, locationUrl) => {
 };
 
 export const registerUser = (user, password, username, admin, success, erro) => {
+
+    if(admin){
+        apiAuthPost('user/createadmin', {Email: user, Password: password, Username: username}, (result) => {
+            const token = result;
+            const decoded = jwtDecode(token);
     
-    apiPost('user/create' + (admin ? 'admin' : ''), {Email: user, Password: password, Username: username}, (result) => {
-        const token = result;
-        const decoded = jwtDecode(token);
-
-        const {unique_name, roles} = decoded;
-
-        localStorage.setItem('user_name', user);
-        localStorage.setItem('user_perm', roles);
-        localStorage.setItem('user_username', username);
-        
-        cookies.set('jwt_auth', token, {
-            expires: new Date(decoded.exp * 1000), 
-            sameSite: 'strict'
-        });
-
-        success(unique_name, roles);
-    }, erro);    
+            const {unique_name, roles} = decoded;
+    
+            localStorage.setItem('user_name', user);
+            localStorage.setItem('user_perm', roles);
+            localStorage.setItem('user_username', username);
+            
+            cookies.set('jwt_auth', token, {
+                expires: new Date(decoded.exp * 1000), 
+                sameSite: 'strict'
+            });
+    
+            success(unique_name, roles);
+        }, erro);  
+    } else {
+        apiPost('user/create', {Email: user, Password: password, Username: username}, (result) => {
+            const token = result;
+            const decoded = jwtDecode(token);
+    
+            const {unique_name, roles} = decoded;
+    
+            localStorage.setItem('user_name', user);
+            localStorage.setItem('user_perm', roles);
+            localStorage.setItem('user_username', username);
+            
+            cookies.set('jwt_auth', token, {
+                expires: new Date(decoded.exp * 1000), 
+                sameSite: 'strict'
+            });
+    
+            success(unique_name, roles);
+        }, erro);  
+    }
+    
+      
 };
 
 export const login = (user, password, success, erro) => {

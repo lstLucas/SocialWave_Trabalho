@@ -27,9 +27,9 @@ const SignUp = () => {
         e.preventDefault();
 
         if(userHasPerm('Admin'))
-          registerUser(object.email, object.password, object.username, true, sucesso, erro)
+          registerUser(object.email, object.password, object.username, true, sucesso, erro);
         else
-        registerUser(object.email, object.password, object.username, false, sucesso, erro)
+        registerUser(object.email, object.password, object.username, false, sucesso, erro);
           
     };
 
