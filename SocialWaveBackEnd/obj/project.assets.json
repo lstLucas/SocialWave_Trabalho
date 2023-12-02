@@ -2330,19 +2330,19 @@
     ]
   },
   "packageFolders": {
-    "/home/lucas-teixeira/.nuget/packages/": {}
+    "/home/lucas/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/lucas-teixeira/Documents/PFS/Rede_Social/SocialWave_Trabalho/SocialWaveBackEnd/SocialWaveBackEnd.csproj",
+      "projectUniqueName": "/home/lucas/Documents/Faculdade/Programacao FullStack/SocialWave_Trabalho/SocialWaveBackEnd/SocialWaveBackEnd.csproj",
       "projectName": "SocialWaveBackEnd",
-      "projectPath": "/home/lucas-teixeira/Documents/PFS/Rede_Social/SocialWave_Trabalho/SocialWaveBackEnd/SocialWaveBackEnd.csproj",
-      "packagesPath": "/home/lucas-teixeira/.nuget/packages/",
-      "outputPath": "/home/lucas-teixeira/Documents/PFS/Rede_Social/SocialWave_Trabalho/SocialWaveBackEnd/obj/",
+      "projectPath": "/home/lucas/Documents/Faculdade/Programacao FullStack/SocialWave_Trabalho/SocialWaveBackEnd/SocialWaveBackEnd.csproj",
+      "packagesPath": "/home/lucas/.nuget/packages/",
+      "outputPath": "/home/lucas/Documents/Faculdade/Programacao FullStack/SocialWave_Trabalho/SocialWaveBackEnd/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/lucas-teixeira/.nuget/NuGet/NuGet.Config"
+        "/home/lucas/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"

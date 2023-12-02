@@ -80,7 +80,7 @@ export const login = (user, password, success, erro) => {
 
         localStorage.setItem('user_name', unique_name);
         localStorage.setItem('user_perm', roles);
-
+  
         cookies.set('jwt_auth', token, {
             expires: new Date(decoded.exp * 1000), 
         });

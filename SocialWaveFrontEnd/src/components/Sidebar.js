@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Sidebar } from 'flowbite-react';
 import { useNavigate } from 'react-router-dom';
 import { HiArrowSmRight, HiChartPie, HiInbox, HiShoppingBag, HiTable, HiUser, HiViewBoards, HiLogout } from 'react-icons/hi';
-import { isAuth, logout, nameLoggedUser } from '../auth';
+import { isAuth, logout, nameLoggedUser, userHasPerm } from '../auth';
 
 export function CustomSideBar({ children }) {
   const [username, setUsername] = useState('');
@@ -46,6 +46,13 @@ export function CustomSideBar({ children }) {
           </Sidebar.Item>
       </>
   );
+  let sideBarAdminItens = userHasPerm('Admin') ? (
+    <>
+      <Sidebar.Item href="/signup" icon={HiTable}>
+        Sign Up
+      </Sidebar.Item>
+    </>
+  ) : null;
 
   return (
     <div className='flex'>
@@ -59,9 +66,7 @@ export function CustomSideBar({ children }) {
             Feed
           </Sidebar.Item>
           { sideBarAuthItens }
-          {/* <Sidebar.Item href="#" icon={HiShoppingBag}>
-            Products
-          </Sidebar.Item> */}
+          { sideBarAdminItens }
           
         </Sidebar.ItemGroup>
       </Sidebar.Items>
