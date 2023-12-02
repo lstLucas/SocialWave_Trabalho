@@ -4,13 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { FaFilter } from "react-icons/fa";
 import SWLogo from "../images/SWLogo.jpeg";
 import { apiAuthDelete, apiAuthGet, apiAuthGetById, apiAuthPost, apiAuthPut } from '../apis';
-import { IconButton } from "@material-tailwind/react";
+import { IconButton, button } from "@material-tailwind/react";
 
 const Feed = () => {
   const [posts, setPosts] = useState([]);
   const [likedPosts, setLikedPosts] = useState(Array(posts.length).fill(false));
   const [userDetails, setUserDetails] = useState(null);
   const [newPostData, setNewPostData] = useState({ title: '', body: '' });
+  const [likedPostIds, setLikedPostIds] = useState([]);
   const [email, setEmail] = useState('');
   const navigate = useNavigate();
 
@@ -37,11 +38,6 @@ const Feed = () => {
 
           setPosts(filteredPosts);
 
-          filteredPosts.forEach(post => {
-            if (post.likes > 0 && !likedPosts.some( x => { return x.id === post.id})) {
-              likedPosts.push(post)
-            }
-          });
         } catch (error) {
           console.error('Erro ao obter posts:', error);
         }
@@ -69,6 +65,48 @@ const Feed = () => {
 
     }
   }, [email]);
+
+  useEffect(() => {
+    if (isAuth() && email) {
+      getUserDetails(email);
+    }
+  }, [email]);
+  
+  useEffect(() => {
+    const fetchLikedPosts = async () => {
+      if (isAuth() && userDetails && posts.length > 0) {
+        try {
+          const likedPostsResponse = await apiAuthGetById(
+            'post/like',
+            userDetails.id,
+            (likedPosts) => {
+              const ids = likedPosts.map((likedPost) => likedPost.id);
+              setLikedPostIds(ids);
+            },
+            () => {
+              console.log('error fetching liked posts');
+            },
+            '',
+            ''
+          );
+  
+          posts.forEach((post, index)=> {
+            const button = document.querySelector(`.like-button-${index}`);
+            if(likedPostIds.includes(post.id)){
+              button.classList.add('text-red-500');
+            }           
+          });
+
+        } catch (error) {
+          console.error('Erro ao buscar curtidas dos posts:', error);
+        }
+      }
+    };
+  
+    fetchLikedPosts();
+  }, [userDetails, posts]);
+  
+  
 
   async function getUserDetails(email) {
     if (isAuth()) {
@@ -114,50 +152,32 @@ const Feed = () => {
   }
 
   const handleLikeClick = async (post, index) => {
-    const updatedLikedPosts = [...likedPosts];
-    updatedLikedPosts[index] = !updatedLikedPosts[index];
+    const isPostLiked = likedPosts.some((likedPost) => likedPost.id === post.id);
+  
+    const updatedLikedPosts = isPostLiked
+      ? likedPosts.filter((likedPost) => likedPost.id !== post.id)
+      : [...likedPosts, post];
+  
     setLikedPosts(updatedLikedPosts);
-
-    const button = document.querySelector(`.like-button-${index}`);
-    console.log(button);
-
-    if (button.classList.contains('text-red-500')) {
-      try {
-        await updateLike(
-          post,
-          userDetails.id,
-          () => {
-            console.log('PUT realizado na API com sucesso');
-            window.location.reload();
-          },
-          (error) => {
-            console.error('Erro ao realizar o PUT na API:', error);
-
-          }
-        );
-      } catch (error) {
-        console.error('Erro ao realizar o PUT na API:', error);
-
-      }
-    } else {
-      try {
-        await updateLike(
-          post,
-          userDetails.id,
-          () => {
-            console.log('Outro tipo de PUT realizado na API com sucesso');
-            window.location.reload();
-          },
-          (error) => {
-            console.error('Erro ao realizar o outro tipo de PUT na API:', error);
-
-          }
-        );
-      } catch (error) {
-        console.error('Erro ao realizar o outro tipo de PUT na API:', error);
-      }
+  
+    try {
+      await updateLike(
+        post,
+        userDetails.id,
+        () => {
+          console.log('PUT realizado na API com sucesso');
+          window.location.reload();
+        },
+        (error) => {
+          console.error('Erro ao realizar o PUT na API:', error);
+        }
+      );
+    } catch (error) {
+      console.error('Erro ao realizar o PUT na API:', error);
     }
   };
+  
+  
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -276,6 +296,7 @@ const Feed = () => {
           <ul className="list-none p-0">
 
             {posts.map((post, index) => (
+              
               <li key={index} className="mb-8">
                 <div className="rounded-xl shadow-lg overflow-hidden bg-white">
                   <div className="p-8">
@@ -285,8 +306,7 @@ const Feed = () => {
                       <p className="text-gray-600">
                         Likes: {post.likes}{' '}
                         <button
-                          // usuarioCurtiuPost ? 
-                          className={likedPosts[index] ? `like-button-${index} text-red-500` : `like-button-${index}`}
+                          className={likedPostIds.includes(post.id) ? 'text-red-500' : ''}
                           onClick={() => handleLikeClick(post, index)}
                         >
                           &hearts;
