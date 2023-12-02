@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using SocialWaveApi.Models;
 
 namespace SocialWaveBackEnd.Controllers;
 
@@ -12,12 +13,14 @@ public class UserController : ControllerBase
 {
     public UserController(UserManager<IdentityUser> userManager,
         SignInManager<IdentityUser> signInManager,
-        RoleManager<IdentityRole> roleManager, IAuthService authService)
+        RoleManager<IdentityRole> roleManager, IAuthService authService,
+        ApplicationDbContext db)
     {
         this.userManager = userManager;
         this.signInManager = signInManager;
         this.authService = authService;
         this.roleManager = roleManager;
+        this.db = db;
     }
 
     [HttpPost("Create")]
@@ -107,8 +110,14 @@ public class UserController : ControllerBase
 
         if (user != null)
         {
+            var posts = db.Feed.Where(p => p.AuthorId == id).ToList();
+            Console.WriteLine(posts);
+            
+            if(posts != null) {
+                db.Feed.RemoveRange(posts);
+                db.SaveChanges();
+            }
             var result = await userManager.DeleteAsync(user);
-
             if (result.Succeeded)
             {
                 return Ok("User deleted successfully.");
@@ -159,4 +168,6 @@ public class UserController : ControllerBase
     private readonly RoleManager<IdentityRole> roleManager;
     private readonly SignInManager<IdentityUser> signInManager;
     private readonly IAuthService authService;
+    private readonly ApplicationDbContext db;
+
 }

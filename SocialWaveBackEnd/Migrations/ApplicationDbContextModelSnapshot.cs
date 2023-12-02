@@ -233,7 +233,7 @@ namespace SocialWaveBackEnd.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Feed");
+                    b.ToTable("Feed", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
