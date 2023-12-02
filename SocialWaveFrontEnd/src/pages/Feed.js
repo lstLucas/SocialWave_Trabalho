@@ -3,7 +3,8 @@ import { getAllPosts, isAuth, nameLoggedEmail, updateLike } from "../auth";
 import { useNavigate } from "react-router-dom";
 import { FaFilter } from "react-icons/fa";
 import SWLogo from "../images/SWLogo.jpeg";
-import { apiAuthGet, apiAuthGetById, apiAuthPost, apiAuthPut } from '../apis';
+import { apiAuthDelete, apiAuthGet, apiAuthGetById, apiAuthPost, apiAuthPut } from '../apis';
+import { IconButton } from "@material-tailwind/react";
 
 const Feed = () => {
   const [posts, setPosts] = useState([]);
@@ -21,25 +22,25 @@ const Feed = () => {
 
   useEffect(() => {
     if (isAuth()) {
-    async function fetchPosts() {
-      try {
-        const filteredPosts = await new Promise((resolve, reject) => {
-          getAllPosts(
-            (filteredPosts) => {
-              resolve(filteredPosts);
-            },
-            (error) => {
-              reject(error);
-            }
-          );
-        });
-  
+      async function fetchPosts() {
+        try {
+          const filteredPosts = await new Promise((resolve, reject) => {
+            getAllPosts(
+              (filteredPosts) => {
+                resolve(filteredPosts);
+              },
+              (error) => {
+                reject(error);
+              }
+            );
+          });
+
           setPosts(filteredPosts);
         } catch (error) {
           console.error('Erro ao obter posts:', error);
         }
       }
-  
+
       fetchPosts();
 
       async function fetchUserInfo() {
@@ -118,32 +119,32 @@ const Feed = () => {
       try {
         await updateLike(
           post,
-          userDetails.id, 
+          userDetails.id,
           () => {
             console.log('PUT realizado na API com sucesso');
-            
+
           },
           (error) => {
             console.error('Erro ao realizar o PUT na API:', error);
-            
+
           }
         );
       } catch (error) {
         console.error('Erro ao realizar o PUT na API:', error);
-        
+
       }
     } else {
       try {
         await updateLike(
           post,
-          userDetails.id, 
+          userDetails.id,
           () => {
             console.log('Outro tipo de PUT realizado na API com sucesso');
-            
+
           },
           (error) => {
             console.error('Erro ao realizar o outro tipo de PUT na API:', error);
-           
+
           }
         );
       } catch (error) {
@@ -185,6 +186,29 @@ const Feed = () => {
   posts.forEach((post, index) => {
     getAuthorUsername(post.authorId, index);
   });
+
+  function TrashIcon() {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        className="h-5 w-5"
+      >
+        <path
+          fillRule="evenodd"
+          d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z"
+          clipRule="evenodd"
+        />
+      </svg>
+    );
+  }
+
+  const deletePost = (id) =>{
+    apiAuthDelete('post', id,
+     () => {console.log("Success deleting post"); window.location.reload(false)},
+     (error) => {console.log("error deleting post " + error)});
+  }
 
   return (
     <div className="container mx-auto py-8">
@@ -242,7 +266,7 @@ const Feed = () => {
         <div>
           <h1 className="text-3xl content-center">Lista de Posts</h1>
           <ul className="list-none p-0">
-            
+
             {posts.map((post, index) => (
               <li key={index} className="mb-8">
                 <div className="rounded-xl shadow-lg overflow-hidden bg-white">
@@ -260,6 +284,11 @@ const Feed = () => {
                         </button>
                       </p>
                       <p className="text-gray-600 author-paragraph">Author: Loading...</p>
+                      {userDetails && userDetails.id === post.authorId && (                     
+                          <IconButton variant="text" color="blue-gray" onClick={() => deletePost(post.id)}>
+                            <TrashIcon />
+                          </IconButton>
+                      )}
                     </div>
                   </div>
                 </div>
