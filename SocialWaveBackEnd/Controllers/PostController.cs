@@ -1,17 +1,20 @@
+#nullable disable
 using SocialWaveApi.Models;
 using SocialWaveBackEnd.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
-namespace Social.Controllers;
+namespace SocialWaveBackEnd.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
 public class PostController : ControllerBase
 {
-    public PostController(ApplicationDbContext db) => 
+    public PostController(ApplicationDbContext db) =>
         this.db = db;
-        
+
     // GET: api/Feed
     [HttpGet]
     public ActionResult<IEnumerable<Post>> Get()
@@ -41,6 +44,20 @@ public class PostController : ControllerBase
         if (string.IsNullOrWhiteSpace(post.Id))
             post.Id = Guid.NewGuid().ToString();
 
+        var authorId = post.AuthorId;
+
+        var author = db.UserInfo.Find(authorId);
+        System.Console.WriteLine(author);
+
+        if (author != null)
+        {
+            post.AuthorId = authorId;
+        }
+        else
+        {
+            return BadRequest("Author not found");
+        }
+
         db.Feed.Add(post);
         db.SaveChanges();
 
@@ -57,7 +74,7 @@ public class PostController : ControllerBase
     {
         if (id != obj.Id)
             return BadRequest("The identifier provided differs from the post identifier");
-        
+
         db.Feed.Update(obj);
         db.SaveChanges();
 

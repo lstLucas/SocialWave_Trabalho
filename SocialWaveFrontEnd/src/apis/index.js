@@ -27,7 +27,7 @@ export const apiAuthGet = (url, success, erro, navigate, locationUrl) => {
     });
 };
 
-export const apiAuthGetPorId = (url, id, success, erro, navigate, locationUrl) => { 
+export const apiAuthGetById = (url, id, success, erro, navigate, locationUrl) => { 
     checkAuth(navigate, locationUrl);
 
     const instance = axios.create({
@@ -100,7 +100,7 @@ export const apiGet = (url, success, erro) => {
     });
 };
 
-export const apiGetPorId = (url, id, success, erro) => { 
+export const apiGetById = (url, id, success, erro) => { 
     axios.get(`${baseURL}/${url}/${id}`).then(result => {
         success(result.data);
     }).catch(error => {

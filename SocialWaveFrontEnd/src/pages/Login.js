@@ -64,7 +64,7 @@ const Login = () => {
                 id="email"
                 name="email"
                 aria-describedby="emailHelp"
-                placeholder="Entre com o e-mail"
+                placeholder="e.g, Lucsff@email.com"
               />
             </div>
             <div className="mb-4">
@@ -76,7 +76,7 @@ const Login = () => {
                 onChange={(e) => alterarCampo(e.target.name, e.target.value)}
                 id="password"
                 name="password"
-                placeholder="Digite a sua senha"
+                placeholder="e.g, ******"
               />
             </div>
             <button

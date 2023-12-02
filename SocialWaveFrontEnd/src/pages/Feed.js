@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { getAllPosts, isAuth } from "../auth";
+import { getAllPosts, isAuth, nameLoggedEmail } from "../auth";
 import { useNavigate } from "react-router-dom";
 import { FaFilter } from "react-icons/fa";
 import SWLogo from "../images/SWLogo.jpeg";
-import { apiAuthGet, apiAuthPost } from '../apis';
+import { apiAuthGet, apiAuthGetById, apiAuthPost } from '../apis';
 
 const Feed = () => {
   const [posts, setPosts] = useState([]);
   const [userDetails, setUserDetails] = useState(null);
   const [newPostData, setNewPostData] = useState({ title: '', body: '' });
+  const [email, setEmail] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,22 +18,76 @@ const Feed = () => {
     }
   });
 
-
   useEffect(() => {
-    getAllPosts((filteredPosts) => {
-      setPosts(filteredPosts);
-    });
+    if (isAuth()) {
+      getAllPosts((filteredPosts) => {
+        setPosts(filteredPosts);
+      });
+
+      async function fetchUserInfo() {
+        try {
+          const resultEmail = await nameLoggedEmail();
+          setEmail(resultEmail);
+        } catch (error) {
+          console.error('Erro ao obter o nome de usuário ou email:', error);
+        }
+      }
+      
+
+      fetchUserInfo();
+    }
   }, []);
 
   useEffect(() => {
-    if (isAuth()) {
-      apiAuthGet('GetUserDetails', userDetails => {
-        setUserDetails(userDetails);
-      }, (error) => {
-        console.error('Erro ao obter detalhes do usuário:', error);
-      });
+    if (isAuth() && email) {
+      getUserDetails(email);
+      
     }
-  }, [navigate]);
+  }, [email]);
+
+  async function getUserDetails(email) {
+    if (isAuth()) {
+      apiAuthGet('user/details/' + email,
+        userDetails => {
+          setUserDetails(userDetails);
+          
+        },
+        error => {
+          console.error('Erro ao obter detalhes do usuário:', error);
+        }
+      );
+    }
+  }
+
+  function updateAuthorName(username, index) {
+    if(isAuth){
+      const authorParagraphs = document.querySelectorAll('.author-paragraph');
+      if (authorParagraphs.length > index) {
+        authorParagraphs[index].textContent = `Author: ${username}`;
+      }
+    }
+  }
+
+  async function getAuthorUsername(id, index) {
+    if(isAuth){
+      try {
+        const userInfo = await new Promise((resolve, reject) => {
+          apiAuthGetById('user', id,
+            userData => {
+              resolve(userData);
+            },
+            error => {
+              reject(error);
+            }
+          );
+        });
+        updateAuthorName(userInfo.username, index);
+      } catch (error) {
+        console.error('Erro ao obter detalhes do usuário:', error);
+      }
+    }
+  }
+
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -43,29 +98,18 @@ const Feed = () => {
     event.preventDefault();
 
     if (isAuth()) {
-      if(!userDetails){
-        apiAuthGet('GetUserDetails', userDetails => {
-          setUserDetails(userDetails);
-        }, (error) => {
-          console.error('Erro ao obter detalhes do usuário:', error);
-          
-        });
-      }
+      console.log(userDetails);
       const newPost = {
+        id: Date.now().toString(),
         title: newPostData.title,
         body: newPostData.body,
         likes: 0,
-        author: {
-          username: userDetails?.username,
-          email: userDetails?.email,
-        },
+        authorId: userDetails.id
       };
-      
+
       apiAuthPost('post', newPost,
         (result) => {
           console.log('Novo post criado:', result);
-          // Atualizar a lista de posts após criar o novo post (opcional)
-          // getAllPosts(setPosts);
         },
         (error) => {
           console.error('Erro ao criar o post:', error);
@@ -73,6 +117,10 @@ const Feed = () => {
       );
     }
   };
+
+  posts.forEach((post, index) => {
+    getAuthorUsername(post.authorId, index);
+  });
 
   return (
     <div className="container mx-auto py-8">
@@ -123,30 +171,37 @@ const Feed = () => {
               type="submit"
               className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
             >
-              Publicar
+              Publish
             </button>
           </form>
         </div>
         <div>
-          <h1>Lista de Posts</h1>
-          <ul>
+          <h1 className="text-3xl content-center">Lista de Posts</h1>
+          <ul className="list-none p-0">
             {posts.map((post, index) => (
-              <li key={index}>
-                <h2>{post.title}</h2>
-                <p>{post.body}</p>
-                <p>Likes: {post.likes}</p>
-                <p>Author: {post.author.username}</p>
+              <li key={index} className="mb-8">
+                <div className="rounded-xl shadow-lg overflow-hidden bg-white">
+                  <div className="p-8">
+                    <h1 className="text-2xl font-bold mb-4">{post.title}</h1>
+                    <p className="text-gray-700 mb-6">{post.body}</p>
+                    <div className="flex justify-between items-center">
+                      <p className="text-gray-600">Likes: {post.likes}</p>
+                      <p className="text-gray-600 author-paragraph">Author: Loading...</p>
+                    </div>
+                  </div>
+                </div>
               </li>
             ))}
           </ul>
         </div>
-
         <div className="bg-white shadow-md rounded-lg p-4 mb-4">
           {/* Postagens... */}
         </div>
       </div>
     </div>
+    
   );
+ 
 };
 
 export default Feed;

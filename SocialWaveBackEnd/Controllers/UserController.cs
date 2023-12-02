@@ -50,7 +50,6 @@ public class UserController : ControllerBase
             return BadRequest(ret.Result);
     }
 
-    [Authorize(Policy = "Admin")]
     [HttpGet("All")]
     public ActionResult<IEnumerable<UserInfo>> GetAllUsers()
     {
@@ -136,23 +135,24 @@ public class UserController : ControllerBase
             return BadRequest(retToken.Result);
     }
 
-    [HttpGet("Details")]
-    public async Task<ActionResult<UserInfo>> GetUserDetails()
+    [HttpGet("Details/{email}")]
+    public async Task<ActionResult<UserInfo>> GetUserDetailsByEmail(string email)
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-        if (userId != null)
+        if (string.IsNullOrEmpty(email))
         {
-            var user = await userManager.FindByIdAsync(userId);
-
-            if (user != null)
-            {
-                return Ok(user);
-            }
+            return BadRequest("O e-mail não pode ser nulo ou vazio.");
         }
 
-        return NotFound();
+        var user = await userManager.FindByEmailAsync(email);
+
+        if (user != null)
+        {
+            return Ok(user);
+        }
+
+        return NotFound("Usuário não encontrado para o e-mail fornecido.");
     }
+
 
 
     private readonly UserManager<IdentityUser> userManager;
