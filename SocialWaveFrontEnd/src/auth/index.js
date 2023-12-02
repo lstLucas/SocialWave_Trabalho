@@ -128,4 +128,5 @@ export const logout = () => {
     cookies.remove('jwt_auth');
     localStorage.removeItem('user_name');
     localStorage.removeItem('user_perm');
+    localStorage.removeItem('user_username');
 };

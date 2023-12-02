@@ -63,13 +63,6 @@ const Feed = () => {
   useEffect(() => {
     if (isAuth() && email) {
       getUserDetails(email);
-
-    }
-  }, [email]);
-
-  useEffect(() => {
-    if (isAuth() && email) {
-      getUserDetails(email);
     }
   }, [email]);
   
