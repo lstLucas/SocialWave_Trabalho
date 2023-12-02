@@ -9,6 +9,7 @@ import { IconButton, button } from "@material-tailwind/react";
 const Feed = () => {
   const [posts, setPosts] = useState([]);
   const [likedPosts, setLikedPosts] = useState(Array(posts.length).fill(false));
+  const [sortByLikes, setSortByLikes] = useState(false);
   const [userDetails, setUserDetails] = useState(null);
   const [newPostData, setNewPostData] = useState({ title: '', body: '' });
   const [likedPostIds, setLikedPostIds] = useState([]);
@@ -151,6 +152,18 @@ const Feed = () => {
     }
   }
 
+  const handleFilterClick = () => {
+    setSortByLikes(prevState => !prevState); 
+  };
+
+  const sortPostsByLikes = (posts) => {
+    if (sortByLikes) {
+      return posts.slice().sort((a, b) => b.likes - a.likes);
+    } else {
+      return posts;
+    }
+  };
+
   const handleLikeClick = async (post, index) => {
     const isPostLiked = likedPosts.some((likedPost) => likedPost.id === post.id);
   
@@ -247,7 +260,9 @@ const Feed = () => {
 
             }}
           >
-            <FaFilter className="mr-2" /> Filtro
+            <div onClick={handleFilterClick} className="flex">
+            <FaFilter className="mr-2" /> Filter
+            </div>
           </button>
         </div>
         <h1 className="text-3xl font-bold mb-4">Feed</h1>
@@ -295,7 +310,7 @@ const Feed = () => {
           <h1 className="text-3xl content-center">Lista de Posts</h1>
           <ul className="list-none p-0">
 
-            {posts.map((post, index) => (
+            {sortPostsByLikes(posts).map((post, index) => (
               
               <li key={index} className="mb-8">
                 <div className="rounded-xl shadow-lg overflow-hidden bg-white">
@@ -326,7 +341,6 @@ const Feed = () => {
           </ul>
         </div>
         <div className="bg-white shadow-md rounded-lg p-4 mb-4">
-          {/* Postagens... */}
         </div>
       </div>
     </div>
