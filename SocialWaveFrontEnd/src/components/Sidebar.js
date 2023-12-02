@@ -22,8 +22,11 @@ export function CustomSideBar({ children }) {
           if(result)
             setUsername(result);
           else{
-            setUsername("Admin");
-            localStorage.setItem('user_name', "admin@email.com");
+            if(isAuth()){
+              setUsername("Admin");
+              localStorage.setItem('user_name', "admin@email.com");
+              localStorage.setItem('user_perm', "Admin");
+            }
           }
         } catch (error) {
           console.error('Error obtaining username:', error);
