@@ -1,3 +1,4 @@
+#nullable disable
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
@@ -94,6 +95,34 @@ public class UserController : ControllerBase
 
         return NotFound("User not found.");
     }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteUserById(string id)
+    {
+        if (string.IsNullOrEmpty(id) || !Guid.TryParse(id, out _))
+        {
+            return BadRequest("Invalid ID");
+        }
+
+        var user = await userManager.FindByIdAsync(id);
+
+        if (user != null)
+        {
+            var result = await userManager.DeleteAsync(user);
+
+            if (result.Succeeded)
+            {
+                return Ok("User deleted successfully.");
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to delete user.");
+            }
+        }
+
+        return NotFound("User not found.");
+    }
+
 
 
     [HttpPost("Login")]
