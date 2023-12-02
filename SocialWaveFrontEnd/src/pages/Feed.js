@@ -35,6 +35,12 @@ const Feed = () => {
         });
   
           setPosts(filteredPosts);
+
+          filteredPosts.forEach(post => {
+            if (post.likes > 0 && !likedPosts.some( x => { return x.id === post.id})) {
+              likedPosts.push(post)
+            }
+          });
         } catch (error) {
           console.error('Erro ao obter posts:', error);
         }
@@ -121,7 +127,7 @@ const Feed = () => {
           userDetails.id, 
           () => {
             console.log('PUT realizado na API com sucesso');
-            
+            window.location.reload();
           },
           (error) => {
             console.error('Erro ao realizar o PUT na API:', error);
@@ -139,7 +145,7 @@ const Feed = () => {
           userDetails.id, 
           () => {
             console.log('Outro tipo de PUT realizado na API com sucesso');
-            
+            window.location.reload();
           },
           (error) => {
             console.error('Erro ao realizar o outro tipo de PUT na API:', error);
@@ -253,6 +259,7 @@ const Feed = () => {
                       <p className="text-gray-600">
                         Likes: {post.likes}{' '}
                         <button
+                          // usuarioCurtiuPost ? 
                           className={likedPosts[index] ? `like-button-${index} text-red-500` : `like-button-${index}`}
                           onClick={() => handleLikeClick(post, index)}
                         >
