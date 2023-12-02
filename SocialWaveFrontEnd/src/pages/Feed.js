@@ -150,7 +150,7 @@ const Feed = () => {
                 className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
                 id="titulo"
                 name="title"
-                placeholder="Digite o título da postagem"
+                placeholder="Your post Title"
                 value={newPostData.title}
                 onChange={handleInputChange}
               />

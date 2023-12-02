@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
 import {useQuery} from '../useQuery';
 import { useNavigate, Link, useParams } from 'react-router-dom';
-import { registerUser } from '../auth';
+import { registerUser, userHasPerm } from '../auth';
 import SWLogo from '../images/SWLogo.jpeg';
 
 const SignUp = () => {
-    const { action } = useParams();
     const query = useQuery();
     const navigate = useNavigate();
     const [object, setObject] = useState({email: '', password: '', username: ''});
@@ -27,7 +26,7 @@ const SignUp = () => {
     const signup = (e) => {
         e.preventDefault();
 
-        if(action === 'admin')
+        if(userHasPerm('Admin'))
           registerUser(object.email, object.password, object.username, true, sucesso, erro)
         else
         registerUser(object.email, object.password, object.username, false, sucesso, erro)

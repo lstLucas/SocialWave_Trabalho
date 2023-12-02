@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { apiAuthDelete, apiAuthGet } from '../apis';
+import { useNavigate } from "react-router-dom";
 import {
   List,
   ListItem,
@@ -7,6 +8,7 @@ import {
   Card,
   IconButton,
 } from "@material-tailwind/react";
+import { userHasPerm } from '../auth';
 
 function TrashIcon() {
   return (
@@ -27,6 +29,14 @@ function TrashIcon() {
 
 const UsersInformation = () => {
   const [users, setUsers] = useState([]);
+  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    if (!userHasPerm('Admin')) {
+      navigate("/feed");
+    }
+  });
 
   useEffect(() => {
     fetchUsers();
