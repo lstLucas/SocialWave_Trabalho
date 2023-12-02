@@ -70,7 +70,7 @@ export const apiAuthPut = (url, id, objeto, success, erro) => {
     });
 
     instance.put(`/${url}/${id}`, objeto).then(() => {
-        success();
+        success(Response.data);
     }).catch(error => {
         erro(error);
     });

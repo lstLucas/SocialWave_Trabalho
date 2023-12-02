@@ -1,6 +1,6 @@
 import Cookies from 'universal-cookie';
 import {jwtDecode} from 'jwt-decode';
-import { apiAuthGet, apiPost } from '../apis';
+import { apiAuthGet, apiAuthPut, apiPost } from '../apis';
 
 const cookies = new Cookies();
 
@@ -88,6 +88,11 @@ export const login = (user, password, success, erro) => {
         success(unique_name, roles);
     }, erro);    
 };
+
+export const updateLike = (post, like, success, error) => {
+    post.likes += like;
+    apiAuthPut('post', post.id, post, success, error );
+}
 
 export const logout = () => {
     cookies.remove('jwt_auth');

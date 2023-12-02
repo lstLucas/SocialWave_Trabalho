@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { getAllPosts, isAuth, nameLoggedEmail } from "../auth";
+import { getAllPosts, isAuth, nameLoggedEmail, updateLike } from "../auth";
 import { useNavigate } from "react-router-dom";
 import { FaFilter } from "react-icons/fa";
 import SWLogo from "../images/SWLogo.jpeg";
-import { apiAuthGet, apiAuthGetById, apiAuthPost } from '../apis';
+import { apiAuthGet, apiAuthGetById, apiAuthPost, apiAuthPut } from '../apis';
 
 const Feed = () => {
   const [posts, setPosts] = useState([]);
@@ -89,10 +89,50 @@ const Feed = () => {
     }
   }
 
-  const handleLikeClick = (index) => {
+  const handleLikeClick = async (post, index) => {
     const updatedLikedPosts = [...likedPosts];
     updatedLikedPosts[index] = !updatedLikedPosts[index];
     setLikedPosts(updatedLikedPosts);
+
+    const button = document.querySelector(`.like-button-${index}`);
+    console.log(button);
+
+    if (button.classList.contains('text-red-500')) {
+      try {
+        await updateLike(
+          post,
+          -1, 
+          () => {
+            console.log('PUT realizado na API com sucesso');
+            
+          },
+          (error) => {
+            console.error('Erro ao realizar o PUT na API:', error);
+            
+          }
+        );
+      } catch (error) {
+        console.error('Erro ao realizar o PUT na API:', error);
+        
+      }
+    } else {
+      try {
+        await updateLike(
+          post,
+          1, 
+          () => {
+            console.log('Outro tipo de PUT realizado na API com sucesso');
+            
+          },
+          (error) => {
+            console.error('Erro ao realizar o outro tipo de PUT na API:', error);
+           
+          }
+        );
+      } catch (error) {
+        console.error('Erro ao realizar o outro tipo de PUT na API:', error);
+      }
+    }
   };
 
   const handleInputChange = (event) => {
@@ -185,27 +225,28 @@ const Feed = () => {
         <div>
           <h1 className="text-3xl content-center">Lista de Posts</h1>
           <ul className="list-none p-0">
+            
             {posts.map((post, index) => (
-               <li key={index} className="mb-8">
-               <div className="rounded-xl shadow-lg overflow-hidden bg-white">
-                 <div className="p-8">
-                   <h1 className="text-2xl font-bold mb-4">{post.title}</h1>
-                   <p className="text-gray-700 mb-6">{post.body}</p>
-                   <div className="flex justify-between items-center">
-                     <p className="text-gray-600">
-                       Likes: {post.likes}{' '}
-                       <span
-                         className={likedPosts[index] ? 'text-red-500' : ''}
-                         onClick={() => handleLikeClick(index)}
-                       >
-                         &hearts;
-                       </span>
-                     </p>
-                     <p className="text-gray-600 author-paragraph">Author: Loading...</p>
-                   </div>
-                 </div>
-               </div>
-             </li>
+              <li key={index} className="mb-8">
+                <div className="rounded-xl shadow-lg overflow-hidden bg-white">
+                  <div className="p-8">
+                    <h1 className="text-2xl font-bold mb-4">{post.title}</h1>
+                    <p className="text-gray-700 mb-6">{post.body}</p>
+                    <div className="flex justify-between items-center">
+                      <p className="text-gray-600">
+                        Likes: {post.likes}{' '}
+                        <button
+                          className={likedPosts[index] ? `like-button-${index} text-red-500` : `like-button-${index}`}
+                          onClick={() => handleLikeClick(post, index)}
+                        >
+                          &hearts;
+                        </button>
+                      </p>
+                      <p className="text-gray-600 author-paragraph">Author: Loading...</p>
+                    </div>
+                  </div>
+                </div>
+              </li>
             ))}
           </ul>
         </div>
